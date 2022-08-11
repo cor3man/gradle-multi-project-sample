@@ -42,6 +42,11 @@ public class SbusGraphGeneratorTask extends DefaultTask {
         }).collect(Collectors.toList());
         System.out.println("--------- Structs per project");
         prgStructs.forEach(System.out::println);
+
+
+
+
+
     }
 
     private List<Path> readProjectJsons(Project project)

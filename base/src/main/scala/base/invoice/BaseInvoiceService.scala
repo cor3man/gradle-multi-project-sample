@@ -5,17 +5,21 @@ import com.sbuslab.utils.{Schedule, Subscribe}
 
 import scala.concurrent.Future
 
+
+//Requests
+//base - base
+//base - app
+//base - common
+
+//Subscribes
+//base - base
+//app - base
+//common - base
 class BaseInvoiceService(sbus: Sbus) {
+  //Subscribes
+  @Subscribe("app - base")
+  def func1() = {}
 
-  @Schedule("41 minutes")
-  @Subscribe("BaseInvoiceService - invoices.calculate-fees")
-  def calculateFees(cmd: Any)(implicit context: Context): Future[Unit] = {
-    Future.unit
-  }
-
-  sbus.request[List[String]]("Base-BaseInvoiceService - APP-InvoiceService")
-  sbus.request[Map[String, Int]]("BaseInvoiceService - rose.send-transaction.map")
-
-  @Subscribe("BaseInvoiceService - invoices.calculate.testfunc")
-  def func() = {}
+  //Requests
+  sbus.request[List[String]]("base - common")
 }

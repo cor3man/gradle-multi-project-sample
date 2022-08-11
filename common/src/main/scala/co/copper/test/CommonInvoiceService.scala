@@ -6,32 +6,23 @@ import com.sbuslab.utils.{Schedule, Subscribe}
 
 import scala.concurrent.Future
 
+//Requests
+//common - common
+//common - app
+//common - base
+
+//Subscribes
+//common - common
+//app - common
+//base - common
 class CommonInvoiceService(sbus: Sbus) {
+  //Subscribes
+  @Subscribe("app - common")
+  def func1() = {}
 
-  sbus.command("CommonInvoiceService - rose.command")
-  sbus.command("CommonInvoiceService - rose.command.with.msg", "msg")
-  sbus.event("CommonInvoiceService - rose.event", "some message")
+  @Subscribe("base - common")
+  def func2() = {}
 
-  sbus.on[String, List[String]]("CommonInvoiceService - get-orders") { (req, context) ⇒
-    Future.successful(List("Order()", "Order()"))
-  }
-
-  sbus.request[Unit]("CommonInvoiceService - rose.send-transaction.another.after.inner")
-
-  class CommonInvoiceServiceInner {
-    @Subscribe("CommonInvoiceServiceInner - invoices.calculate.InvoiceServiceInner")
-    def func() = {}
-  }
-
-  object CommonObjectInner {
-    @Subscribe("CommonObjectInner - invoices.calculate.ObjectInner")
-    def func() = {}
-
-    sbus.request[Unit]("CommonObjectInner - rose.send-transaction.another.after.inner")
-  }
-}
-
-class CommonInvoiceServiceAdditional {
-  @Subscribe("APP-InvoiceService - Common-CommonInvoiceServiceAdditional")
-  def func() = {}
+  //Requests
+  sbus.request[Unit]("common - app")
 }
