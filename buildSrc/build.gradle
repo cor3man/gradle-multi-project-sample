@@ -1,0 +1,81 @@
+import org.gradle.api.internal.classpath.ModuleRegistry
+import org.gradle.api.internal.project.ProjectInternal
+
+buildscript {
+    ext.kotlinVersion = '1.6.10'
+
+    repositories {
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+apply plugin: 'java-library'
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'kotlin'
+
+validatePlugins {
+    enableStricterValidation = true
+}
+
+gradlePlugin {
+    plugins {
+        graphGeneratorDependencyPlugin {
+            id = 'com.vanniktech.dependency.graph.generator'
+            implementationClass = 'com.vanniktech.dependency.graph.generator.DependencyGraphGeneratorPlugin'
+        }
+        testPlugin {
+            id = 'com.test'
+            implementationClass = 'com.test.GreetingPlugin'
+        }
+        sbusPlugin {
+            id = 'com.copper.generator'
+            implementationClass = 'com.copper.generator.SbusGraphGeneratorPlugin'
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    google()
+    gradlePluginPortal()
+}
+
+dependencies {
+    implementation localGroovy()
+    implementation gradleApi()
+    api "guru.nidi:graphviz-java:0.18.1"
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "com.android.tools.build:gradle:7.2.2"
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+
+    // https://github.com/gradle/gradle/issues/16774#issuecomment-893493869
+    def toolingApiBuildersJar = (project as ProjectInternal).services.get(ModuleRegistry.class)
+            .getModule("gradle-tooling-api-builders")
+            .classpath
+            .asFiles
+            .first()
+    testRuntimeOnly(files(toolingApiBuildersJar))
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+wrapper {
+    gradleVersion = '7.4.2'
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+test {
+    testLogging {
+        exceptionFormat "full"
+    }
+    jvmArgs("-Xmx2048m")
+}

@@ -1,0 +1,3 @@
+class OutOfPackage {
+  class CleanClassInnerSecondx
+}

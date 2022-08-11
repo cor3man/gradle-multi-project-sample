@@ -1,0 +1,62 @@
+
+/*plugins {
+    id 'com.github.sherter.google-java-format' version '0.9' apply false
+//    id "com.vanniktech.dependency.graph.generator" version "0.8.0"
+}*/
+
+allprojects {
+    version = '1.0'
+}
+apply plugin: "com.vanniktech.dependency.graph.generator"
+apply plugin: "com.copper.generator"
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'scala'
+
+    apply plugin: "com.test"
+
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/public' }
+        mavenCentral()
+
+        flatDir {
+            //dirs 'd:\\Development\\Scala\\Work\\tmp\\TestPlugin\\'
+            dirs 'd:\\Development\\Scala\\Work\\CopperCompilerPlugin\\target\\scala-2.12\\'
+        }
+    }
+    configurations {
+        scalaCompilerPlugin
+    }
+    dependencies {
+        scalaCompilerPlugin 'localhost:ccplugin_2.12:0.1.0'
+        implementation 'com.sbuslab:utils:1.2.+'
+        implementation 'com.sbuslab:akka-http-tools:1.1.+'
+        implementation 'com.sbuslab:sbus:1.1.+'
+    }
+
+    tasks.withType(ScalaCompile){
+        scalaCompileOptions.with {
+            force = true
+        }
+        // Map plugin jars to -Xplugin parameter
+        List<String> parameters =
+                configurations.scalaCompilerPlugin.files.collect {
+                    '-Xplugin:'+ it.absolutePath
+                }
+
+        parameters.add("-P:ccplugin:out=$buildDir/ccplugin/".toString())
+        parameters.add("-P:ccplugin:prj=$project.name".toString())
+
+        // Add existing parameters
+        List<String> existingParameters = scalaCompileOptions.additionalParameters
+        if (existingParameters) {
+            parameters.addAll(existingParameters)
+        }
+
+        // Finally set the additionalParameters
+        scalaCompileOptions.additionalParameters = parameters
+    }
+
+
+}

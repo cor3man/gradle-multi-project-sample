@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <profile name="Gradle 2" modules="gradle-multi-project-sample.app.main,gradle-multi-project-sample.app.test">
+      <option name="deprecationWarnings" value="true" />
+      <option name="uncheckedWarnings" value="true" />
+      <parameters>
+        <parameter value="-target:jvm-11" />
+        <parameter value="-P:ccplugin:out=D:\Development\Scala\gradle-multi-project-sample\app\build/ccplugin/" />
+        <parameter value="-P:ccplugin:prj=app" />
+      </parameters>
+      <plugins>
+        <plugin path="d:\Development\Scala\Work\CopperCompilerPlugin\target\scala-2.12\ccplugin_2.12-0.1.0.jar" />
+      </plugins>
+    </profile>
+    <profile name="Gradle 3" modules="gradle-multi-project-sample.base.main,gradle-multi-project-sample.base.test">
+      <option name="deprecationWarnings" value="true" />
+      <option name="uncheckedWarnings" value="true" />
+      <parameters>
+        <parameter value="-target:jvm-11" />
+        <parameter value="-P:ccplugin:out=D:\Development\Scala\gradle-multi-project-sample\base\build/ccplugin/" />
+        <parameter value="-P:ccplugin:prj=base" />
+      </parameters>
+      <plugins>
+        <plugin path="d:\Development\Scala\Work\CopperCompilerPlugin\target\scala-2.12\ccplugin_2.12-0.1.0.jar" />
+      </plugins>
+    </profile>
+    <profile name="Gradle 4" modules="gradle-multi-project-sample.common.main,gradle-multi-project-sample.common.test">
+      <option name="deprecationWarnings" value="true" />
+      <option name="uncheckedWarnings" value="true" />
+      <parameters>
+        <parameter value="-target:jvm-11" />
+        <parameter value="-P:ccplugin:out=D:\Development\Scala\gradle-multi-project-sample\common\build/ccplugin/" />
+        <parameter value="-P:ccplugin:prj=common" />
+      </parameters>
+      <plugins>
+        <plugin path="d:\Development\Scala\Work\CopperCompilerPlugin\target\scala-2.12\ccplugin_2.12-0.1.0.jar" />
+      </plugins>
+    </profile>
+  </component>
+</project>

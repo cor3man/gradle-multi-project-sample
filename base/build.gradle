@@ -1,0 +1,17 @@
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'scala'
+}
+
+repositories {
+    maven { url 'https://oss.sonatype.org/content/repositories/public' }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.sbuslab:utils:1.2.+'
+    implementation 'com.sbuslab:akka-http-tools:1.1.+'
+    implementation 'com.sbuslab:sbus:1.1.+'
+}
