@@ -23,6 +23,9 @@ class CommonInvoiceService(sbus: Sbus) {
   @Subscribe("base - common")
   def func2() = {}
 
+  @Subscribe("app_command - common_command")
+  def func3() = {}
+
   //Requests
   sbus.request[Unit]("common - app")
 }

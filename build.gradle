@@ -8,8 +8,6 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'scala'
 
-    apply plugin: "com.test"
-
     repositories {
         maven { url 'https://oss.sonatype.org/content/repositories/public' }
         mavenCentral()

@@ -23,11 +23,22 @@ class InvoiceService(sbus: Sbus)(implicit val ec: ExecutionContext, actorSystem:
   @Subscribe("common - app")
   def func1() = {}
 
+  @Subscribe("app - app")
+  def func2() = {}
+
+  @Subscribe("app - app1")
+  def func3() = {}
+
   //Requests
   sbus.request[List[String]]("app - app")
   sbus.request[List[String]]("app - app1")
-  sbus.request[String]("app - base", "421")
+
   sbus.request[Map[String, Int]]("app - common")
 
 }
 
+class AnotherService(sbus: Sbus)(implicit val ec: ExecutionContext, actorSystem: ActorSystem, tag: ClassTag[String]) extends Logging with Memoize with FutureHelpers {
+
+  sbus.command("app_command - common_command", "msg")
+  sbus.request[String]("app - base", "421")
+}
