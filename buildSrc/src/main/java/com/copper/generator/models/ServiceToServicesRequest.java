@@ -1,16 +1,17 @@
 package com.copper.generator.models;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ServiceToServicesRequest {
     private String serviceName;
-    private Set<String> eventTo = new HashSet<>();
-    private Set<String> requestTo = new HashSet<>();
-    private Set<String> commandTo = new HashSet<>();
-
-    private Set<String> to;
+    private List<String> eventTo = new ArrayList<>();
+    private List<String> requestTo = new ArrayList<>();
+    private List<String> commandTo = new ArrayList<>();
+    private List<String> to;
 
     public ServiceToServicesRequest(){}
 
@@ -24,58 +25,33 @@ public class ServiceToServicesRequest {
         return serviceName;
     }
 
-    public void setServiceName(String serviceName)
+    public void ListServiceName(String serviceName)
     {
         this.serviceName = serviceName;
     }
 
-    public Set<String> getTo()
+    public List<String> getTo()
     {
-        to = new HashSet<>();
-        to.addAll(requestTo);
-        to.addAll(commandTo);
-        to.addAll(eventTo);
-
-        return requestTo;
+        to = Stream.of(requestTo, commandTo, eventTo)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        return to;
     }
 
-    public void setTo(Set<String> to)
-    {
-        this.to = to;
-    }
-
-
-
-    public Set<String> getEventTo()
+    public List<String> getEventTo()
     {
         return eventTo;
     }
 
-    public void setEventTo(Set<String> eventTo)
-    {
-        this.eventTo = eventTo;
-    }
-
-    public Set<String> getRequestTo()
+    public List<String> getRequestTo()
     {
         return requestTo;
     }
 
-    public void setRequestTo(Set<String> requestTo)
-    {
-        this.requestTo = requestTo;
-    }
-
-    public Set<String> getCommandTo()
+    public List<String> getCommandTo()
     {
         return commandTo;
     }
-
-    public void setCommandTo(Set<String> commandTo)
-    {
-        this.commandTo = commandTo;
-    }
-
 
     @Override
     public String toString()

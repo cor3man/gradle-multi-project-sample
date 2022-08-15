@@ -14,9 +14,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,6 +26,8 @@ public class SbusGraphGeneratorTask extends DefaultTask {
 
     private List<Struct> requestsPerService;
 
+    private Function<ServiceToServicesRequest, Collection<String>> func;
+
     @TaskAction
     public void perform()
     {
@@ -35,7 +36,7 @@ public class SbusGraphGeneratorTask extends DefaultTask {
         System.out.println("--------- Structs per service");
         requestsPerService.forEach(System.out::println);
 
-        Set<ServiceToServicesRequest> servToServReqs = new HashSet<>();
+        List<ServiceToServicesRequest> servToServReqs = new ArrayList<>();
 
         requestsPerService.forEach(prgStruct -> {
             ServiceToServicesRequest stsr = new ServiceToServicesRequest(prgStruct.getName());
@@ -61,7 +62,7 @@ public class SbusGraphGeneratorTask extends DefaultTask {
         servToServReqs.forEach(System.out::println);
 
         DependencyGraphGenerator generator = new DependencyGraphGenerator(servToServReqs);
-        MutableGraph graph = generator.generateGraph();
+        MutableGraph graph = generator.generateGraph(func);
         System.out.println(graph);
         saveDot(graph);
 
@@ -118,5 +119,10 @@ public class SbusGraphGeneratorTask extends DefaultTask {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setFunc(Function<ServiceToServicesRequest, Collection<String>> func)
+    {
+        this.func = func;
     }
 }
